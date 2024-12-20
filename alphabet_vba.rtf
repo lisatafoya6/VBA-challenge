@@ -1,0 +1,61 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2818
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 Sub alphabet()\
+\
+Dim ticker As String\
+Dim ticker_counter As Double\
+Dim ticker_open_close As Double\
+Dim open_price As Double\
+Dim close_price As Double\
+Dim total_volume As Double\
+\
+For Each ws In Worksheets\
+\
+LastRow = Cells(Rows.Count, "A").End(xlUp).Row\
+ticker_counter = 2\
+ticker_open_close = 2\
+total_volume = 0\
+For i = 2 To LastRow\
+ticker = ws.Cells(i, 1).Value\
+open_price = ws.Cells(ticker_open_close, 3)\
+total_volume = total_volume + ws.Cells(i, 7).Value\
+\
+'use max and min for greatest increase and decrease'\
+'Interior. equation, >1 is red <0 is red'\
+\
+If ws.Cells(i + 1, 1).Value <> ws.Cells(i, 1).Value Then\
+ws.Cells(ticker_counter, 9).Value = ticker\
+close_price = ws.Cells(i, 6)\
+ws.Cells(ticker_counter, 10).Value = close_price - open_price0\
+ws.Cells(ticker_counter, 11).Value = (close_price - open_price) / open_price\
+ws.Cells(ticker_counter, 12).Value = total_volume\
+ticker_counter = ticker_counter + 1\
+ticker_open_close = i + 1\
+total_volume = 0\
+ If ws.Cells(ticker_counter, 10).Value < 0 Then\
+        ws.Cells(ticker_counter, 10).Interior.ColorIndex = 4\
+    ElseIf ws.Cells(ticker_counter, 10).Value > 0 Then\
+        ws.Cells(ticker_counter, 10).Interior.ColorIndex = 3\
+    End If\
+'close - open / open' percentage change calculation\
+\
+Range("I1").Value = "Ticker"\
+Range("J1").Value = "Quarterly Change"\
+Range("K1").Value = "Percent Change"\
+Range("L1").Value = "Total Stock Volume"\
+\
+End If\
+Next i\
+Next ws\
+\
+\
+\
+\
+End Sub\
+\
+}
